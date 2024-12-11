@@ -72,14 +72,15 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
+        'throttle_app.throttle.CustomAnonRateThrottle',
+        'throttle_app.throttle.CustomUserRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/minute',  # Limit for anonymous users
-        'user': '10/minute', # Limit for authenticated users
+        'anon': '5/minute',
+        'user': '10/minute',
     },
 }
+
 
 WSGI_APPLICATION = 'throttle.wsgi.application'
 
