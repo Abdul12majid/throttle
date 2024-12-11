@@ -10,6 +10,16 @@ class CustomAnonRateThrottle(SimpleRateThrottle):
             'ident': self.get_ident(request),
         }
 
+    def wait(self):
+        # Returns the remaining time in seconds
+        return self.duration - (self.now - self.history[-1])
+
+    def throttle_failure(self):
+        wait_time = self.wait()
+        return {
+            "error": f"Rate limit exceeded. Please wait {wait_time:.0f} seconds before retrying."
+        }
+
 
 class CustomUserRateThrottle(SimpleRateThrottle):
     scope = 'user'
@@ -22,3 +32,13 @@ class CustomUserRateThrottle(SimpleRateThrottle):
                 'ident': request.user.pk,
             }
         return None
+
+    def wait(self):
+        # Returns the remaining time in seconds
+        return self.duration - (self.now - self.history[-1])
+
+    def throttle_failure(self):
+        wait_time = self.wait()
+        return {
+            "error": f"Rate limit exceeded. Please wait {wait_time:.0f} seconds before retrying."
+        }
