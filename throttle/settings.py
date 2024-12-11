@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'throttle_app',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,17 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/minute',  # Limit for anonymous users
+        'user': '10/minute', # Limit for authenticated users
+    },
+}
 
 WSGI_APPLICATION = 'throttle.wsgi.application'
 
